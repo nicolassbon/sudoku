@@ -45,38 +45,35 @@ public class NumberText extends JTextField implements EventListener {
             this.setText(initialValue.toString());
         }
 
-        this.getDocument().addDocumentListener(new DocumentListener() {
-            @Override
-            public void insertUpdate(final DocumentEvent event) {
-                commitEditedValue();
-            }
+        if (!fixed) {
+            this.getDocument().addDocumentListener(new DocumentListener() {
+                @Override
+                public void insertUpdate(final DocumentEvent event) {
+                    commitEditedValue();
+                }
 
-            @Override
-            public void removeUpdate(final DocumentEvent event) {
-                commitEditedValue();
-            }
+                @Override
+                public void removeUpdate(final DocumentEvent event) {
+                    commitEditedValue();
+                }
 
-            @Override
-            public void changedUpdate(final DocumentEvent event) {
-                commitEditedValue();
-            }
-        });
+                @Override
+                public void changedUpdate(final DocumentEvent event) {
+                    commitEditedValue();
+                }
+            });
+        }
     }
 
     @Override
     public void update(final EventType eventType) {
-        if (eventType.equals(CLEAR_SPACE) && this.isEnabled()) {
+        if (eventType == CLEAR_SPACE && this.isEnabled()) {
             setTextWithoutLoop("");
         }
     }
 
     private void commitEditedValue() {
         if (syncing) {
-            return;
-        }
-
-        if (fixed) {
-            syncFromService();
             return;
         }
 

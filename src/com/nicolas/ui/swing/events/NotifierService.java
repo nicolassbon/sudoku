@@ -1,7 +1,7 @@
 package com.nicolas.ui.swing.events;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 
@@ -9,9 +9,12 @@ import static com.nicolas.ui.swing.events.EventType.CLEAR_SPACE;
 
 public class NotifierService {
 
-    private final Map<EventType, List<EventListener>> listeners = new HashMap<>() {{
-        put(CLEAR_SPACE, new ArrayList<>());
-    }};
+    private final Map<EventType, List<EventListener>> listeners;
+
+    public NotifierService() {
+        listeners = new EnumMap<>(EventType.class);
+        listeners.put(CLEAR_SPACE, new ArrayList<>());
+    }
 
     public void subscribe(final EventType eventType, final EventListener listener) {
         listeners.get(eventType).add(listener);
